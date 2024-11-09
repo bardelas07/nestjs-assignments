@@ -11,16 +11,15 @@ export class AppController {
   }
   
   @Get(':n')
-generateFibonacci(@Param('n') n: string): { sequence: number[] } {
+calculateFactorial(@Param('n') n: string): { result: number } {
     const numberN = parseInt(n, 10);
-    if (numberN < 1) throw new BadRequestException('Provide a positive integer for n.');
-    return { sequence: this.fibonacci(numberN) };
+    if (isNaN(numberN) || numberN < 0) throw new BadRequestException('Please provide a valid non-negative integer for n.');
+    return { result: this.factorial(numberN) };
 }
 
-private fibonacci(n: number): number[] {
-    const sequence = [0, 1];
-    while (sequence.length < n) sequence.push(sequence.at(-2) + sequence.at(-1));
-    return sequence.slice(0, n);
+private factorial(n: number): number {
+    return n === 0 ? 1 : Array.from({ length: n }, (_, i) => i + 1).reduce((acc, val) => acc * val, 1);
 }
+
 
 }
