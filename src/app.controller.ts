@@ -10,19 +10,14 @@ export class AppController {
     return this.appService.getHello();
   }
   @Get(':n')
-generateFibonacci(@Param('n') n: string): { sequence: number[] } {
+checkPrime(@Param('n') n: string): { isPrime: boolean } {
     const numberN = parseInt(n, 10);
     if (isNaN(numberN) || numberN < 1) throw new BadRequestException('Please provide a valid positive integer for n.');
-    return { sequence: this.fibonacci(numberN) };
+    return { isPrime: this.isPrime(numberN) };
 }
 
-private fibonacci(n: number): number[] {
-    let [a, b] = [0, 1];
-    return Array.from({ length: n }, () => {
-        const current = a;
-        [a, b] = [b, a + b];
-        return current;
-    });
+private isPrime(num: number): boolean {
+    return num > 1 && ![...Array(Math.floor(Math.sqrt(num)) - 1)].some((_, i) => num % (i + 2) === 0);
 }
-
+  
 }
